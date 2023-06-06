@@ -25,6 +25,7 @@ jobs:
     - name: Commit Id
       run: |
         echo ${{ github.sha }}
+        git config --global --add safe.directory '*'
         git log -1
         echo ${{ github.head_ref }}
         git diff ${{ github.sha }}
