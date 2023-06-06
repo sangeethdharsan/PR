@@ -1,6 +1,11 @@
-on: push
+on:
+  pull_request:
+    branches:
+      - main
 name: CI
 jobs:
+  build:
+    if: ${{ !contains(github.event.head_commit.message, '#docs') }}
   phpunit:
     runs-on: ubuntu-latest
     container:
@@ -20,14 +25,6 @@ jobs:
         composer install --ignore-platform-req=ext-sodium
  
     - name: Run Testsuite
-      run: vendor/bin/phpcs -i
-  
-    - name: Commit Id
       run: |
-        echo ${{ github.sha }}
-        git config --global --add safe.directory '*'
-        git log -1
-    - name: Commit Id 123
-      run: |   
-        echo ${{ github.head_ref }}
-        git diff ${{ github.sha }} ${{ github.head_ref }}
+         vendor/bin/phpcs -i
+         vendor/bin/phpcs --error-severity=1 --warning-severity=0 --standard=Magento2
