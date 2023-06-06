@@ -25,4 +25,5 @@ jobs:
      - name: Run Testsuite
        run: |
           vendor/bin/phpcs -i
+          vendor/bin/phpcs --error-severity=1 --warning-severity=0 --standard=Magento2 ${{ github.head_ref }}
           vendor/bin/phpcs --error-severity=1 --warning-severity=0 --standard=Magento2 ${{ github.sha }}
