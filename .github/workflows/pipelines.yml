@@ -1,11 +1,9 @@
 on:
   pull_request:
     branches:
-      - main
+      - "**"
 name: CI
 jobs:
-  build:
-    if: ${{ !contains(github.event.head_commit.message, '#docs') }}
   phpunit:
     runs-on: ubuntu-latest
     container:
@@ -23,7 +21,10 @@ jobs:
         curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
         composer self-update -- 2.1.1
         composer install --ignore-platform-req=ext-sodium
- 
+
+  build:
+    if: ${{ !contains(github.event.head_commit.message, '#docs') }}
+    steps:
     - name: Run Testsuite
       run: |
          vendor/bin/phpcs -i
