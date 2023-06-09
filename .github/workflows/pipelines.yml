@@ -13,9 +13,9 @@ jobs:
        with:
         fetch-depth: 1
         
-     - name: Installing git
+     - name: Installing git and curl
        run: |    
-          apt-get update && apt-get install -y unzip git
+          apt-get update && apt-get install curl && apt-get install -y unzip git
           
      - name: Get PR commit files
        id: pr_files
