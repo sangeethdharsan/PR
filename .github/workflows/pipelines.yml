@@ -4,8 +4,7 @@ on:
       - "**"
 name: CI
 jobs:
-  phpunit:
-    if: ${{ !contains(github.event.head_commit.message, '#docs') }}  
+  phpcs:
     runs-on: ubuntu-latest
     container:
      image: magento/magento-cloud-docker-php:8.1-fpm-1.3.2
