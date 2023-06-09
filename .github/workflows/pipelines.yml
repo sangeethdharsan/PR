@@ -22,6 +22,7 @@ jobs:
      - name: Installing git
        run: |    
           apt-get update && apt-get install -y unzip git
+          git diff $PR_COMMITS
 
      - name: Install composer dependencies
        run: |
