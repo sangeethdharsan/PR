@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Base\Sales\Api\GetLineListFromOrdersInterface" type="Base\Sales\Model\GetLineListFromOrders"/>
+    <type name="Magento\Sales\Block\Order\History">
+        <plugin name="Base_Sales_Order_History_Search"
+                type="Base\Sales\Plugin\Block\Order\History\SearchByOrderNumber"/>
+    </type>
+</config>
