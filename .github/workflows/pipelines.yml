@@ -13,6 +13,13 @@ jobs:
      - uses: actions/checkout@v1
        with:
         fetch-depth: 1
+     - name: Retrieve PR Commits
+       run: |
+        PR_NUMBER=$(echo "${{ github.event.pull_request.url }}" | awk -F/ '{print $NF}')
+        API_URL="https://api.github.com/repos/${{ github.repository }}/pulls/${PR_NUMBER}/commits"
+        PR_COMMITS=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" $API_URL)
+        echo $PR_COMMITS  
+
      - name: Installing git
        run: |    
           apt-get update && apt-get install -y unzip git
@@ -25,5 +32,4 @@ jobs:
      - name: Run Testsuite
        run: |
           vendor/bin/phpcs -i
-          vendor/bin/phpcs --error-severity=1 --warning-severity=0 --standard=Magento2 ${{ github.head_ref }}
-          vendor/bin/phpcs --error-severity=1 --warning-severity=0 --standard=Magento2 ${{ github.sha }}
+          vendor/bin/phpcs --error-severity=1 --warning-severity=0 --standard=Magento2 $PR_COMMITS
