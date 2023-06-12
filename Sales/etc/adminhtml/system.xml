@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="sales">
+            <group id="return_service" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="100" translate="label">
+                <label>Order Return Service Settings</label>
+                <field id="url_template" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="text">
+                    <label>URL of the return service</label>
+                    <comment/>
+                </field>
+            </group>
+        </section>
+        <section id="shipping">
+            <group id="fedex_tracking" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="300" translate="label">
+                <label>Fedex Tracking Settings</label>
+                <field id="url_template" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="text">
+                    <label>URL of the fedex return service</label>
+                    <comment>%s - fedex tracking number</comment>
+                </field>
+            </group>
+            <group id="metapack_tracking" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="400" translate="label">
+                <label>Metapack Tracking Settings</label>
+                <field id="url" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="text">
+                    <label>URL of the metapack tracking</label>
+                    <comment>Example: https://[subdomain].deliverytracker.io/</comment>
+                </field>
+                <field id="logging_enabled" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="20" translate="label" type="select">
+                    <label>Logging Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
