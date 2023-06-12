@@ -37,25 +37,5 @@ jobs:
          composer install --ignore-platform-req=ext-sodium
      - name: Run Testsuite
        run: |
-        PR_FILES=$(curl -sSL -H "Authorization: ***" \
-               -H "Accept: application/vnd.github.v3+json" \
-               "https://api.github.com/repos/sangeethdharsan/PR/pulls/${PR_NUMBER}/files" \
-               | jq -r '.[] | .filename' 2>/dev/null)
-
-               if [[ -z "${PR_FILES}" ]]; then
-               echo "No files found in the pull request."
-               exit 0
-               fi
-
-               echo "::set-output name=files::${PR_FILES}"
-
                vendor/bin/phpcs -i
-               vendor/bin/phpcs --error-severity=1 --warning-severity=0 --standard=Magento2 --ignore=vendor/,lib/ ${PR_FILES} --report=json > phpcs_report.json
-
-               if [[ $? -ne 0 ]]; then
-              echo "PHPCS encountered errors or warnings:"
-              cat phpcs_report.json
-              exit 1
-              fi
-
-              exit 0
+               vendor/bin/phpcs --error-severity=1 --warning-severity=0 --standard=Magento2 Sales
