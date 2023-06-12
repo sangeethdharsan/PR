@@ -1,6 +1,6 @@
 on:
   pull_request:
-    branches:
+    types:
       - "**"
 name: CI
 jobs:
@@ -9,20 +9,28 @@ jobs:
     container:
      image: magento/magento-cloud-docker-php:8.1-fpm-1.3.2
     steps:
+     - name: Check out code
      - uses: actions/checkout@v2
-       with:
-        fetch-depth: 1
-     - name: Retrieve PR Commits
-       run: |
-        PR_NUMBER=$(echo "${{ github.event.pull_request.url }}" | awk -F/ '{print $NF}')
-        API_URL="https://api.github.com/repos/${{ github.repository }}/pulls/${PR_NUMBER}/commits"
-        PR_COMMITS=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" $API_URL)
-        echo $PR_COMMITS  
-
-     - name: Installing git
+     
+     - name: Installing git and curl
        run: |    
           apt-get update && apt-get install -y unzip git
-
+          
+     - name: Get PR commit files
+       id: pr_files
+       run: |
+          PR_NUMBER=$(echo "${{ github.event.pull_request.url }}" | awk -F'/' '{print $NF}')
+          PR_FILES=$(curl -sSL -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+                      -H "Accept: application/vnd.github.v3+json" \
+                      "https://api.github.com/repos/${{ github.repository }}/pulls/${PR_NUMBER}/files" \
+                      | jq -r '.[].filename')
+          echo "::set-output name=files::${PR_FILES}"
+          
+     - name: Print PR commit files
+       run: |
+          echo "Files modified in PR commit:"
+          echo "${{ steps.pr_files.outputs.files }}"
+  
      - name: Install composer dependencies
        run: |
          curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -31,4 +39,4 @@ jobs:
      - name: Run Testsuite
        run: |
           vendor/bin/phpcs -i
-          vendor/bin/phpcs --error-severity=1 --warning-severity=0 --standard=Magento2 $PR_COMMITS
+          vendor/bin/phpcs --error-severity=1 --warning-severity=0 --standard=Magento2 ${{ steps.pr_files.outputs.files }}
