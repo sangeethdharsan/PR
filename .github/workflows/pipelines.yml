@@ -37,5 +37,24 @@ jobs:
          composer install --ignore-platform-req=ext-sodium
      - name: Run Testsuite
        run: |
-               vendor/bin/phpcs -i
-               vendor/bin/phpcs --error-severity=1 --warning-severity=0 --standard=Magento2 Sales
+           FILES=${{ steps.pr_files.outputs.files }}
+           TOTAL_FILES=$(echo "$FILES" | wc -l)
+           COMPLETED_FILES=0
+
+           echo "Scanning pull request files:"
+           while read -r FILE; do
+           COMPLETED_FILES=$((COMPLETED_FILES+1))
+           echo "[$COMPLETED_FILES/$TOTAL_FILES] $FILE"
+           # Run your scanning command here on $FILE
+
+           # Example: Perform PHPCS on the file
+           vendor/bin/phpcs --standard=Magento2 "$FILE"
+
+           # Example: Perform another scanning command
+          # <your-scanning-command> "$FILE"
+
+           # Adjust the output as needed
+           echo "Scan complete for $FILE"
+           echo ""
+
+         done <<< "$FILES"
