@@ -44,4 +44,3 @@ jobs:
    echo "::set-output name=files::${PR_FILES}"
    vendor/bin/phpcs -i
    vendor/bin/phpcs --error-severity=1 --warning-severity=0 --standard=Magento2 ${PR_FILES}
-
