@@ -38,4 +38,4 @@ jobs:
      - name: Run Testsuite
        run: |
           vendor/bin/phpcs -i
-          vendor/bin/phpcs --error-severity=1 --warning-severity=0 --standard=Magento2 ${{ steps.pr_files.outputs.files }}
+          vendor/bin/phpcs --error-severity=1 --warning-severity=0 --standard=Magento2 "::set-output name=files::${PR_FILES}"
