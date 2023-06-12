@@ -51,10 +51,10 @@ jobs:
            vendor/bin/phpcs --standard=Magento2 "$FILE"
 
            # Example: Perform another scanning command
-          # <your-scanning-command> "$FILE"
+           # <your-scanning-command> "$FILE"
 
            # Adjust the output as needed
            echo "Scan complete for $FILE"
            echo ""
 
-         done <<< "$FILES"
+           done <<< "$FILES"
