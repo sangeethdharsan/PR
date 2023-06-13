@@ -23,9 +23,10 @@ jobs:
        id: pr-files
        run: |
           pr_number=$(echo "${{ github.event.pull_request.url }}" | awk -F'/' '{print $NF}')
+          cd ${{ github.workspace }}
           files=$(git diff --name-only --diff-filter=ACM "origin/main...${pr_number}")
           echo "$files" > modified_files.txt
 
      - name: Run PHPCS
        run: |
-          cat modified_files.txt | xargs vendor/bin/phpcs --error-severity=1 --warning-severity=0 --standard=Magento2
+          cat modified_files.txt | xargs ./vendor/bin/phpcs --error-severity=1 --warning-severity=0 --standard=Magento2
