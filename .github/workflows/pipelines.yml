@@ -22,6 +22,7 @@ jobs:
      - name: Retrieve modified files
        id: pr-files
        run: |
+          ls
           files=$(git --no-pager diff --name-only origin/main...HEAD)
           echo "$files" > modified_files.txt
 
