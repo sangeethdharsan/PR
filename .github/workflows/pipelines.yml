@@ -14,22 +14,6 @@ jobs:
      - name: Installing git && curl && jq
        run: |    
           apt-get update && apt-get install -y unzip git && apt-get install -y jq
-          
-     - name: Get PR commit files
-       id: pr_files
-       run: |
-          PR_NUMBER=$(echo "${{ github.event.pull_request.url }}" | awk -F'/' '{print $NF}')
-          PR_FILES=$(curl -sSL -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-                      -H "Accept: application/vnd.github.v3+json" \
-                      "https://api.github.com/repos/${{ github.repository }}/pulls/${PR_NUMBER}/files" \
-                      | jq -r '.[].filename')
-          echo "::set-output name=files::${PR_FILES}"
-          
-     - name: Print PR commit files
-       run: |
-          echo "Files modified in PR commit:"
-          echo "${{ steps.pr_files.outputs.files }}"
-  
      - name: Install composer dependencies
        run: |
          curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -38,9 +22,7 @@ jobs:
      - name: Retrieve modified files
        id: pr-files
        run: |
-          files=$(curl -s -H 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-          "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" \
-          | jq -r '.[] | .filename')
+          files=$(git --no-pager diff --name-only origin/main...HEAD)
           echo "$files" > modified_files.txt
 
      - name: Run PHPCS
