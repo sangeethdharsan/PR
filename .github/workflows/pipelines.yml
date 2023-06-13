@@ -35,26 +35,11 @@ jobs:
          curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
          composer self-update -- 2.1.1
          composer install --ignore-platform-req=ext-sodium
-     - name: Run Testsuite
+     - name: Get modified files
+       id: file-list
+       run: echo "::set-output name=files::$(git diff --name-only HEAD...$GITHUB_BASE_REF)"
+
+     - name: Run PHPCS
        run: |
-           FILES=${{ steps.pr_files.outputs.files }}
-           TOTAL_FILES=$(echo "$FILES" | wc -l)
-           COMPLETED_FILES=0
-
-           echo "Scanning pull request files:"
-           while read -r FILE; do
-           COMPLETED_FILES=$((COMPLETED_FILES+1))
-           echo "[$COMPLETED_FILES/$TOTAL_FILES] $FILE"
-           # Run your scanning command here on $FILE
-
-           # Example: Perform PHPCS on the file
-           vendor/bin/phpcs --standard=Magento2 "$FILE"
-
-           # Example: Perform another scanning command
-           # <your-scanning-command> "$FILE"
-
-           # Adjust the output as needed
-           echo "Scan complete for $FILE"
-           echo ""
-
-           done <<< "$FILES"
+            vendor/bin/phpcs -i
+            vendor/bin/phpcs --standard=Magento2 ${{ steps.file-list.outputs.files }}
