@@ -23,8 +23,7 @@ jobs:
        id: pr-files
        run: |
           git config --global --add safe.directory /__w/PR/PR
-          git log -1
-          diff_files=$(git diff --name-only --diff-filter=ACM "$(git merge-base origin/main HEAD)" HEAD)
+          diff_files=$(git diff --name-only --diff-filter=ACM "$(git merge-base FETCH_HEAD HEAD)" HEAD)
           files="$diff_files"$'\n'
           echo "$files" > modified_files.txt
 
