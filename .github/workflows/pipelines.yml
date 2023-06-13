@@ -22,10 +22,9 @@ jobs:
      - name: Retrieve modified files
        id: pr-files
        run: |
-          pr_number=$(echo "${{ github.event.pull_request.url }}" | awk -F'/' '{print $NF}')
-          cd PR # Replace with the correct path to your Git repository
-          files=$(git diff --name-only --diff-filter=ACM "origin/main...${pr_number}")
-          echo "$files" > modified_files.txt
+          pr_number=$(echo "https://api.github.com/repos/sangeethdharsan/PR/pulls/4" | awk -F'/' '{print $NF}')
+           files=$(git diff --name-only --diff-filter=ACM "origin/main...${pr_number}")
+           echo "$files" > modified_files.txt
 
      - name: Run PHPCS
        run: |
