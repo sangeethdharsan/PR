@@ -22,9 +22,12 @@ jobs:
      - name: Retrieve modified files
        id: pr-files
        run: |
+          git log -1
           pr_number=$(echo "$GITHUB_REF" | awk -F'/' '{print $3}')
-          files=$(git diff --name-only --diff-filter=ACM "origin/main...$pr_number")
+          diff_files=$(git diff --name-only --diff-filter=ACM "origin/main...$pr_number")
+          files+="$diff_files"$'\n'
           echo "$files" > modified_files.txt
+
 
      - name: Run PHPCS
        run: |
