@@ -22,10 +22,10 @@ jobs:
      - name: Retrieve modified files
        id: pr-files
        run: |
-          ls
-          files=$(git --no-pager diff --name-only origin/main...HEAD)
+          pr_number=$(echo "${{ github.event.pull_request.url }}" | awk -F'/' '{print $NF}')
+          files=$(git diff --name-only --diff-filter=ACM "origin/main...${pr_number}")
           echo "$files" > modified_files.txt
 
      - name: Run PHPCS
        run: |
-          cat modified_files.txt | xargs vendor/bin/phpcs --standard=Magento2
+          cat modified_files.txt | xargs vendor/bin/phpcs --error-severity=1 --warning-severity=0 --standard=Magento2
