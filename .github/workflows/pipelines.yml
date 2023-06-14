@@ -24,12 +24,14 @@ jobs:
        run: |
          diff_content=""
          files=$(curl -s -H 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-         "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" \
+         "https://api.github.com/repos/sangeethdharsan/PR/pulls/4/files" \
          | jq -r '.[] | .filename')
+
          for file in $files; do
          diff=$(git diff --no-index /dev/null "$file")
          diff_content+="Diff for file: $file\n$diff\n\n"
          done
+
          echo "$diff_content" > pr_diff.txt
 
      - name: Display PR diff content
