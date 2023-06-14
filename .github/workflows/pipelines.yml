@@ -19,16 +19,15 @@ jobs:
          curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
          composer self-update -- 2.1.1
          composer install --ignore-platform-req=ext-sodium
-     - name: Retrieve modified files
+     - name: Retrieve committed files in PR
        id: pr-files
        run: |
-             git config --global --add safe.directory /__w/PR/PR
-             files=$(git diff --name-only --diff-filter=ACM)
-             echo "$files" > modified_files.txt
-             cat modified_files.txt
+          git config --global --add safe.directory /__w/PR/PR
+          files=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | xargs)
+          echo "$files" > committed_files.txt
 
      - name: Run PHPCS
        run: |
-            cat modified_files.txt | xargs vendor/bin/phpcs --error-severity=1 --warning-severity=0 --standard=Magento2
+           cat committed_files.txt | xargs vendor/bin/phpcs --error-severity=1 --warning-severity=0 --standard=Magento2
 
  
