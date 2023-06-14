@@ -22,11 +22,12 @@ jobs:
      - name: Retrieve modified files
        id: pr-files
        run: |
-          git config --global --add safe.directory /__w/PR/PR
-          diff_files=$(git diff --name-only --diff-filter=ACM "$(git merge-base origin/main HEAD)" HEAD)
-          echo "$diff_files" > modified_files.txt
+             git config --global --add safe.directory /__w/PR/PR
+             diff_files=$(git diff --name-only --diff-filter=ACM)
+             echo "$diff_files" > modified_files.txt
 
      - name: Run PHPCS
        run: |
-             cat modified_files.txt | xargs vendor/bin/phpcs --error-severity=1 --warning-severity=0 --standard=Magento2
+            cat modified_files.txt | xargs vendor/bin/phpcs --error-severity=1 --warning-severity=0 --standard=Magento2
+
  
