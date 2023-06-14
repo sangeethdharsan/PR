@@ -22,8 +22,7 @@ jobs:
      - name: Retrieve diff content for PR files to the phpcs
        run: |
           git config --global --add safe.directory /__w/PR/PR
-          git log -1
-          git diff main
+          git pull
           git diff ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} --name-only --diff-filter=ACM
           git diff ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} --name-only --diff-filter=ACM | xargs vendor/bin/phpcs --error-severity=1 --warning-severity=0 --standard=Magento2
  
