@@ -22,12 +22,17 @@ jobs:
      - name: Retrieve diff content for PR files
        id: pr-diff
        run: |
-          if [ -z "$files" ]; then
-           echo "No modified files found."
-           exit 0
-           fi
-           echo "$files" > modified_files.txt
           
+          git config --global --add safe.directory /__w/PR/PR
+          files=$(git diff --name-only --diff-filter=ACM)
+
+            if [ -z "$files" ]; then
+            echo "No modified files found."
+            exit 0
+            fi
+            echo "$files" > modified_files.txt
+            cat modified_files.txt 
+    
      - name: Run PHPCS
        run: |
             cat modified_files.txt | xargs vendor/bin/phpcs --standard=Magento2
