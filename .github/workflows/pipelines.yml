@@ -22,9 +22,11 @@ jobs:
      - name: Retrieve diff content for PR files
        id: pr-diff
        run: |
-          git config --global --add safe.directory /__w/PR/PR
-          files=$(git diff --name-only --diff-filter=ACM)
-          echo "$files" > modified_files.txt
+          if [ -z "$files" ]; then
+           echo "No modified files found."
+           exit 0
+           fi
+           echo "$files" > modified_files.txt
           
      - name: Run PHPCS
        run: |
