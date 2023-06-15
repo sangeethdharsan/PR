@@ -21,7 +21,7 @@ jobs:
          composer install --ignore-platform-req=ext-sodium
      - name: Retrieve diff content for PR files to the phpcs
        run: |
-          cd ${{ github.workspace }}
+          cd ${{ github.workspace }}/${{ github.ref }}
           pwd
           git config --global --add safe.directory .
           git fetch --all
