@@ -21,12 +21,12 @@ jobs:
          composer install --ignore-platform-req=ext-sodium
      - name: Retrieve diff content for PR files to the phpcs
        run: |
-          cd ${{ github.workspace }}
+          cd /__w/PR/PR
           pwd
           git config --global --add safe.directory .
           git fetch --all
-          git checkout ${{ github.event.pull_request.head.ref }}
-          git pull origin ${{ github.event.pull_request.head.ref }}
+          git branch -a | sed -n 's/remotes\/origin\/\(.*\)/\1/p' | xargs -I {} git checkout {}
+          git pull --all
           git diff ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} --name-only --diff-filter=ACM
           git diff ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} --name-only --diff-filter=ACM | xargs vendor/bin/phpcs --error-severity=1 --warning-severity=0 --standard=Magento2
  
