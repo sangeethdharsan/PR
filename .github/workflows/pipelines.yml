@@ -23,6 +23,7 @@ jobs:
        run: |
           cd /__w/PR/PR
           git config --global --add safe.directory /__w/PR/PR
+          git fetch --all
           git checkout test
           git pull origin test
           git diff ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} --name-only --diff-filter=ACM
