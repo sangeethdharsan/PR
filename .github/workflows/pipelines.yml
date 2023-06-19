@@ -25,8 +25,9 @@ jobs:
           pwd
           git config --global --add safe.directory /__w/PR/PR 
           git fetch --all
-          git branch -a | sed -n 's/remotes\/origin\/\(.*\)/\1/p' | xargs -I {} git checkout {}
           git pull --all
+          git checkout ${{ github.event.pull_request.head.ref }}
+          git pull origin ${{ github.event.pull_request.head.ref }
           git diff ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} --name-only --diff-filter=ACM
           git diff ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} --name-only --diff-filter=ACM | xargs vendor/bin/phpcs --error-severity=1 --warning-severity=0 --standard=Magento2
  
