@@ -24,7 +24,7 @@ jobs:
       - name: Install Composer
         run: |
           curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-          php /usr/local/bin/composer self-update --2.5.8
+          
           
       - name: Install dependencies
         run: composer install --ignore-platform-req=ext-sodium
