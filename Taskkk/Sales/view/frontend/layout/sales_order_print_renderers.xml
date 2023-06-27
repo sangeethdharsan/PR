@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="sales.order.print.info">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Base\Checkout\ViewModel\OrderInfo</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="sales.order.print.renderers.default">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Base\Sales\ViewModel\Order\Items\Render\Item</argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>

@@ -1,0 +1,17 @@
+{
+  "name": "kurtgeiger/module-sales",
+  "description": "Sales Module",
+  "type": "magento2-module",
+  "license": "proprietary",
+  "require": {
+    "magento/module-sales": "*"
+  },
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Base\\Sales\\": ""
+    }
+  }
+}

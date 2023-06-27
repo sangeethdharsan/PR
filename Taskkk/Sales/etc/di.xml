@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+<!--    <preference for="Magento\Sales\Model\Order\Invoice\Total\Shipping" type="Base\Sales\Model\Order\Invoice\Total\Shipping" />-->
+    <preference for="Base\Sales\Api\Data\SanitizerInterface" type="Base\Sales\Model\Sanitizer"/>
+    <preference for="Magento\Sales\Block\Order\History" type="Base\Sales\Block\Order\History"/>
+    <preference for="Magento\Sales\Model\Order\Payment\Transaction\Builder" type="Base\Sales\Model\TransactionBuilder"/>
+    <preference for="Magento\Sales\Model\Order\CreditmemoRepository" type="Base\Sales\Model\Order\Creditmemo"/>
+    <type name="Base\Sales\ViewModel\Order\History\OrdersNumber">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session</argument>
+        </arguments>
+    </type>
+    <type name="Base\Sales\ViewModel\Order\History\SearchForm">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session</argument>
+        </arguments>
+    </type>
+    <!-- Temporary log of cancel orders -->
+    <type name="Ebizmarts\SagePaySuite\Model\Server">
+        <plugin name="Temp_Cancel_Order_Catcher_Log"
+                type="Base\Sales\Plugin\Model\Method\CancelOrderLogger"/>
+    </type>
+    <type name="Magento\Sales\Controller\Guest\Form">
+        <plugin name="Base_Sales_Plugin_Sales_Controller_Guest_Form" type="Base\Sales\Plugin\Controller\Guest\FormPlugin" sortOrder="1"/>
+    </type>
+    <virtualType name="CreditmemoGridAggregator">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="base_currency_code" xsi:type="string">sales_creditmemo.base_currency_code</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Base\Sales\Model\Order\Invoice\Total\Shipping">
+        <arguments>
+            <argument name="serializer" xsi:type="object">Magento\Framework\Serialize\Serializer\Json</argument>
+        </arguments>
+    </type>
+    <type name="Base\Sales\Plugin\Model\Method\CancelOrderLogger">
+        <arguments>
+            <argument name="serializer" xsi:type="object">Magento\Framework\Serialize\Serializer\Json</argument>
+        </arguments>
+    </type>
+</config>
